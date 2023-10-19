@@ -8,10 +8,25 @@ import Navigation from "@/components/Navigation";
 import ManualMode from "@/components/ManualMode";
 import { useTimerStore } from "@/store/timerStore";
 import ConfettiDrop from "@/components/ConfettiDrop";
+import { useStatisticsStore } from "@/store/StatisticsStore";
+import calcStatistics from "@/lib/calcStatistics";
+import { useEffect } from "react";
 
 export default function Home() {
   const { settingsOpen, settings } = useSettingsModalStore();
-  const { isSolving } = useTimerStore();
+  const { isSolving, selectedCube } = useTimerStore();
+  const { setGlobal, setCubeSession, setSession } = useStatisticsStore();
+
+  useEffect(() => {
+    if (selectedCube && !isSolving) {
+      const { global, session, cubeSession } = calcStatistics({
+        cube: selectedCube,
+      });
+      setGlobal(global);
+      setSession(session);
+      setCubeSession(cubeSession);
+    }
+  }, [selectedCube, isSolving, setGlobal, setCubeSession, setSession]);
 
   return (
     <>
