@@ -1,27 +1,38 @@
-import { Cube } from "@/interfaces/Cube";
-import getSolvesMetrics from "./getSolvesMetrics";
-import { sort } from "fast-sort";
+import { Solve } from "@/interfaces/Solve";
+import { defaultRecords as record } from "./defaultRecords";
 
-export function verifyRecords({
-  best,
-  ao5,
-  ao12,
-  ao50,
-  ao100,
-  cube,
+export default function verifyRecords({
+  global,
+  session,
+  lastSolve,
 }: {
-  best: number;
-  ao5: number;
-  ao12: number;
-  ao50: number;
-  ao100: number;
-  cube: Cube;
+  global: CubeStatistics;
+  session: CubeStatistics;
+  lastSolve: Solve | null;
 }) {
-  const { global } = getSolvesMetrics(cube.category, cube.name);
+  // if (lastSolve) {
+  //   if (global.best === lastSolve.time && global.best > 0) {
+  //     record.best.status = true;
+  //     console.log(global.best - lastSolve.time);
+  //     record.best.difference = global.best - lastSolve.time;
+  //   }
+  // }
+  if (session.ao5 === global.ao5 && global.ao5 > 0) {
+    record.ao5.status = true;
+    record.ao5.difference = global.ao5 - session.ao5;
+  }
+  if (session.ao12 === global.ao12 && global.ao12 > 0) {
+    record.ao12.status = true;
+    record.ao12.difference = global.ao12 - session.ao12;
+  }
+  if (session.ao50 === global.ao50 && global.ao50 > 0) {
+    record.ao50.status = true;
+    record.ao50.difference = global.ao50 - session.ao50;
+  }
+  if (session.ao100 === global.ao100 && global.ao100 > 0) {
+    record.ao100.status = true;
+    record.ao100.difference = global.ao100 - session.ao100;
+  }
 
-  const bestGlobal = sort(global).asc((u) => u.time);
-  console.log(bestGlobal[0]?.time, best);
-  return {
-    best: bestGlobal[0]?.time === best,
-  };
+  return record;
 }

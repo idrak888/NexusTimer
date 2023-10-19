@@ -5,7 +5,7 @@ import { useStatisticsStore } from "@/store/StatisticsStore";
 
 export default function OverviewPanel() {
   const { lang, settings } = useSettingsModalStore();
-  const { global, session, cubeSession } = useStatisticsStore();
+  const { global, session } = useStatisticsStore();
 
   return (
     <div className="flex flex-col justify-center w-full h-full">
@@ -15,29 +15,21 @@ export default function OverviewPanel() {
             {translation.timer["deviation"][lang]}
             {": "}
             {formatTime(session.deviation)}
-            {" / "}
-            {formatTime(cubeSession.deviation)}
           </div>
           <div className="font-medium">
             {translation.timer["mean"][lang]}
             {": "}
             {formatTime(session.mean)}
-            {" / "}
-            {formatTime(cubeSession.mean)}
           </div>
           <div className="font-medium">
             {translation.timer["best"][lang]}
             {": "}
             {formatTime(session.best)}
-            {" / "}
-            {formatTime(cubeSession.best)}
           </div>
           <div className="font-medium">
             {translation.timer["counter"][lang]}
             {": "}
             {session.count}
-            {" / "}
-            {cubeSession.count}
           </div>
         </>
       ) : null}

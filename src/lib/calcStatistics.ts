@@ -36,7 +36,7 @@ export default function calcStatistics({ cube }: { cube: Cube | null }) {
   };
 
   const sessionDefault: CubeStatistics = {
-    count: session.length,
+    count: 0,
     best: 0,
     ao3: 0,
     ao5: 0,

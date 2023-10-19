@@ -11,22 +11,36 @@ import ConfettiDrop from "@/components/ConfettiDrop";
 import { useStatisticsStore } from "@/store/StatisticsStore";
 import calcStatistics from "@/lib/calcStatistics";
 import { useEffect } from "react";
+import verifyRecords from "@/lib/verifyRecords";
+import { useConfettiStore } from "@/store/ConfettiStore";
 
 export default function Home() {
   const { settingsOpen, settings } = useSettingsModalStore();
-  const { isSolving, selectedCube } = useTimerStore();
-  const { setGlobal, setCubeSession, setSession } = useStatisticsStore();
+  const { isSolving, selectedCube, lastSolve } = useTimerStore();
+  const { setGlobal, setSession } = useStatisticsStore();
+  const { setIsVisible } = useConfettiStore();
 
   useEffect(() => {
     if (selectedCube && !isSolving) {
-      const { global, session, cubeSession } = calcStatistics({
+      const { global, session } = calcStatistics({
         cube: selectedCube,
       });
+
+      const record = verifyRecords({ global, session, lastSolve });
+      if (
+        record.best.status ||
+        record.ao5.status ||
+        record.ao12.status ||
+        record.ao50.status ||
+        record.ao100.status
+      ) {
+        setIsVisible(true);
+      }
+      console.log(record);
       setGlobal(global);
       setSession(session);
-      setCubeSession(cubeSession);
     }
-  }, [selectedCube, isSolving, setGlobal, setCubeSession, setSession]);
+  }, [selectedCube, isSolving, setGlobal, setSession, setIsVisible, lastSolve]);
 
   return (
     <>

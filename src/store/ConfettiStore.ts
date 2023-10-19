@@ -6,7 +6,7 @@ type ConfettiStore = {
 };
 
 export const useConfettiStore = create<ConfettiStore>((set) => ({
-  isVisible: true,
+  isVisible: false,
   setIsVisible: (status: boolean) => {
     set({ isVisible: status });
   },
