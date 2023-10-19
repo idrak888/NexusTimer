@@ -1,17 +1,15 @@
 import { sort } from "fast-sort";
-import findCube from "./findCube";
 import calculateCurrentAo from "./calculateCurrentAo";
 import getDeviation from "./getDeviation";
 import getMean from "./getMean";
 import { defaultTimerStatistics } from "./const/defaultTimerStatistics";
+import { Cube } from "@/interfaces/Cube";
 
 export default function calcStatistics({
-  cubeId,
+  cube,
 }: {
-  cubeId: string;
+  cube: Cube | null;
 }): CubeStatistics {
-  const cube = findCube({ cubeId: cubeId });
-
   if (!cube) {
     return defaultTimerStatistics;
   }

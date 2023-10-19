@@ -5,31 +5,45 @@ import { useTimerStore } from "@/store/timerStore";
 import translation from "@/translations/global.json";
 import { useState, useEffect } from "react";
 import formatTime from "@/lib/formatTime";
+import { verifyRecords } from "@/lib/verifyRecords";
+import { useConfettiStore } from "@/store/ConfettiStore";
 
 export default function OverviewPanel() {
   const { lang, settings } = useSettingsModalStore();
   const { scramble, selectedCube } = useTimerStore();
   const [statistics, setStatistics] = useState(defaultTimerStatistics);
+  const { setIsVisible } = useConfettiStore();
 
   useEffect(() => {
+    const { count, best, ao3, ao5, ao12, ao50, ao100, deviation, mean } =
+      calcStatistics({
+        cube: selectedCube,
+      });
     if (selectedCube) {
-      const { count, best, ao3, ao5, ao12, ao50, ao100, deviation, mean } =
-        calcStatistics({
-          cubeId: selectedCube.id,
-        });
-      setStatistics({
-        count,
+      const records = verifyRecords({
         best,
-        ao3,
         ao5,
         ao12,
         ao50,
         ao100,
-        deviation,
-        mean,
+        cube: selectedCube,
       });
+      console.log(records);
+      if (records.best) setIsVisible(true);
     }
-  }, [scramble, selectedCube]);
+
+    setStatistics({
+      count,
+      best,
+      ao3,
+      ao5,
+      ao12,
+      ao50,
+      ao100,
+      deviation,
+      mean,
+    });
+  }, [scramble, selectedCube, setIsVisible]);
 
   return (
     <div className="flex flex-col justify-center w-full h-full">
@@ -49,6 +63,8 @@ export default function OverviewPanel() {
             {translation.timer["best"][lang]}
             {": "}
             {formatTime(statistics.best)}
+            {" / "}
+            {"1.12"}
           </div>
           <div className="font-medium">
             {translation.timer["counter"][lang]}
