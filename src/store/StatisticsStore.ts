@@ -5,22 +5,22 @@ type Statistics = {
   global: CubeStatistics;
   session: CubeStatistics;
   cubeSession: CubeStatistics;
-  setGlobal: (global: CubeStatistics) => void;
-  setSession: (session: CubeStatistics) => void;
-  setCubeSession: (cubeSession: CubeStatistics) => void;
+  setGlobalStats: (global: CubeStatistics) => void;
+  setSessionStats: (session: CubeStatistics) => void;
+  setCubeSessionStats: (cubeSession: CubeStatistics) => void;
 };
 
 export const useStatisticsStore = create<Statistics>((set) => ({
   global: defaultTimerStatistics,
   session: defaultTimerStatistics,
   cubeSession: defaultTimerStatistics,
-  setGlobal: (global: CubeStatistics) => {
+  setGlobalStats: (global: CubeStatistics) => {
     set({ global });
   },
-  setSession: (session: CubeStatistics) => {
+  setSessionStats: (session: CubeStatistics) => {
     set({ session });
   },
-  setCubeSession: (cubeSession: CubeStatistics) => {
+  setCubeSessionStats: (cubeSession: CubeStatistics) => {
     set({ cubeSession });
   },
 }));
